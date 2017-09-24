@@ -1,4 +1,4 @@
-import RouterUtils from './utils/Router';
+import RouterUtils from './utils';
 
 export default class IVRouter {
 
@@ -17,7 +17,7 @@ export default class IVRouter {
     let routeKeys = Object.keys(routes);
     for (let i = 0; i < routeKeys.length; i++) {
 
-      // extract the key from the url
+      // extract the slug from the url e.g. media/:id --> "media" is the slug
       let key = RouterUtils.extractSlug(routeKeys[i]);
 
       if (key) {
@@ -27,18 +27,16 @@ export default class IVRouter {
         }
 
         // use the key as a lookup and push into it
-        // 1 - the route's sub keys
+        // 1 - the route to match e.g. /media/:id/blah
         // 2 - a regex to match the route
         // 3 - a handler function to handle the route
         this._routes[key].push({
-          keys: routeKeys[i],
+          keyDefs: routeKeys[i],
           regex: RouterUtils.convertRouteToRegex(routeKeys[i]),
           handler: routes[routeKeys[i]]
         });
       }
     }
-
-    console.log(this._routes);
 
     window.onhashchange = (state) => {
       this.checkHash(state);
@@ -57,10 +55,7 @@ export default class IVRouter {
       // use the key to get the list of sub routes
       let subRoutes = this._routes[key];
 
-      if (e.newURL !== e.oldURL) {
-        console.log('navigate to hash: ' + hash);
-        RouterUtils.processRoute(subRoutes, hash);
-      } else if (e === true) {
+      if (e.newURL !== e.oldURL || e === true) {
         RouterUtils.processRoute(subRoutes, hash);
       }
     }

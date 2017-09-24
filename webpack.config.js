@@ -3,13 +3,13 @@ var path = require('path');
 // var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: 'IVRouter.js',
+  entry: './src/ivRouter.js',
   output: {
     filename: 'ivRouter.js',
     path: path.resolve(__dirname, 'dist'),
 
     // path: 'dist',
-    library: 'IVRouter',
+    library: 'ivRouter',
     libraryTarget: 'umd',
     umdNamedDefine: true,
   },
